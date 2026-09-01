@@ -86,3 +86,27 @@ exports.updateUserRole = async (req, res, next) => {
     next(error);
   }
 };
+// @desc    Delete user and their complaints (Admin Only)
+// @route   DELETE /api/admin/users/:id
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Optional: User ki saari complaints bhi delete karne ke liye
+    await Complaint.deleteMany({ user: req.params.id });
+
+    // User delete karein
+    await user.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: 'User and associated complaints deleted successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
