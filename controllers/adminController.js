@@ -1,5 +1,5 @@
 const User = require('../models/Users');
-
+const Complaint = require('../models/Complaint');
 // @desc    Get all users
 // @route   GET /api/admin/users
 exports.getAllUsers = async (req, res, next) => {
